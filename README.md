@@ -2,6 +2,8 @@
 
 ## Realtek 8812AU driver version 5.2.9.3
 
+This branch includes additions from Gordboy (no longer on Github). He or She has extended the driver to support dynamic LED control. Thanks for implementing this! 
+
 Works fine with Ubuntu 17.10 Artful 4.13 kernel, and now 4.14 kernel.
 All flavours of vfs_read now replaced for kernel >= 4.14.
 
@@ -11,6 +13,8 @@ Source builds with no warnings or errors, and is very stable in use.
 Realtek seem to have done a decent job here.
 
 Added (cosmeticly edited) original Realtek_Changelog.txt, this README.md, dkms.conf and a deb dkms package for convenience.
+
+Added LEDcontrol by Makefile, module parameter and dynamic /proc writing
 
 ### Building
 
@@ -51,6 +55,37 @@ To uninstall the dkms package on Debian, Ubuntu, Mint &etc:
 ```sh
 $ sudo dpkg -P gord-rtl8812au-dkms
 ```
+
+### LED control 
+ 
+Thanks to @dkadioglu and others for a start on this. 
+ 
+#### You can now control LED behaviour statically by Makefile, for example: 
+ 
+```sh 
+CONFIG_LED_ENABLE = n 
+``` 
+value can be y or n 
+ 
+#### statically by module parameter in /etc/modprobe.d/8812au.conf or wherever, for example: 
+ 
+```sh 
+options 8812au rtw_led_enable=0 
+``` 
+value can be 0 or 1 
+ 
+#### or dynamically by writing to /proc/net/rtl8812au/$(your interface name)/led_enable, for example: 
+ 
+```sh 
+$ echo "0" > /proc/net/rtl8812au/$(your interface name)/led_enable 
+``` 
+value can be 0 or 1 
+ 
+#### check current value: 
+ 
+```sh 
+$ cat /proc/net/rtl8812au/$(your interface name)/led_enable 
+``` 
 
 ### NetworkManager
 
