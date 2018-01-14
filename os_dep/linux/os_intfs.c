@@ -486,9 +486,13 @@ module_param(rtw_notch_filter, uint, 0644);
 MODULE_PARM_DESC(rtw_notch_filter, "0:Disable, 1:Enable, 2:Enable only for P2P");
 
 #ifdef CONFIG_SW_LED
- int rtw_led_enable = 1;
- module_param(rtw_led_enable, int, 0644);
- MODULE_PARM_DESC(rtw_led_enable,"Enable status LED");
+#ifdef CONFIG_LED_ENABLE
+int rtw_led_enable = 1;
+#else
+int rtw_led_enable = 0;
+#endif //CONFIG_LED_ENABLE
+module_param(rtw_led_enable, int, 0644);
+MODULE_PARM_DESC(rtw_led_enable,"Enable status LED");
 #endif //CONFIG_SW_LED
 
 uint rtw_hiq_filter = CONFIG_RTW_HIQ_FILTER;
